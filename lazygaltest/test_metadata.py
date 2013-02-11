@@ -26,7 +26,7 @@ from lazygal import metadata
 metadata.FILE_METADATA_ENCODING = 'utf-8'  # force for these tests
 from lazygal.generators import Album
 from lazygal.sourcetree import Directory
-from lazygal import pyexiv2api as pyexiv2
+from gi.repository import GExiv2
 
 
 class TestFileMetadata(LazygalTest):
@@ -65,10 +65,9 @@ class TestFileMetadata(LazygalTest):
         img_path = self.add_img(self.source_dir, 'captioned_pic.jpg')
 
         # Set dumy comment which should be ignored.
-        im = pyexiv2.ImageMetadata(img_path)
-        im.read()
+        im = GExiv2.Metadata(img_path)
         im['Exif.Photo.UserComment'] = 'comment not to show'
-        im.write()
+        im.save_file()
 
         # Output real comment which should be chosen over the dummy comment.
         image_caption = u'Les élèves forment une ronde dans la <em>cour</em>.'
@@ -157,7 +156,7 @@ class TestFileMetadata(LazygalTest):
     def test_focal_length(self):
         sample = 'sample-model-pentax1.jpg'
         im_md = metadata.ImageInfoTags(self.get_sample_path(sample))
-        self.assertEqual(im_md.get_focal_length(), '18.0 mm (35 mm equivalent: 27.0 mm)')
+        self.assertEqual(im_md.get_focal_length(), '18 mm (35 mm equivalent: 27 mm)')
 
     def test_authorship(self):
         sample = 'sample-author-badencoding.jpg'
