@@ -27,7 +27,7 @@ $(document).keypress(function(e) {
       }
 });
 
-#if display_theme_selector
+{% if display_theme_selector %}
 /**
  * Change background colors
  */
@@ -74,12 +74,13 @@ function eraseCookie(name) {
     createCookie(name, "", -1);
 }
 // /cookie functions
-#end
+{% end %}
 
-#if display_social_buttons
+{% if display_social_buttons %}
 /**
  * Set social buttons proper link
  */
+// Show social icons only if javascript is turned on
 $('#share_icons').show();
 encoded_location_href = encodeURIComponent(location.href);
 $('.share_delicious').attr('href', 'https://delicious.com/post?url=' + encoded_location_href)
@@ -96,4 +97,13 @@ $('.share_twitter').attr('href', 'https://twitter.com/intent/tweet?url=' + encod
 $(function(){
     $('#share_icons').children().not('p').tipTip({defaultPosition: 'top', delay: 300, maxWidth: 'auto'});
 });
-#end
+{% end %}
+
+{% if google_analytics_tracking_id %}
+/**
+ * Track image_original_link clicks
+ */
+$('.image_original_link a').click(function(){
+    _gaq.push(['_trackEvent', 'image_original_link', $(this).attr('href'), 'Show original image']);  
+});
+{% end %}
