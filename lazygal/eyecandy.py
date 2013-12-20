@@ -17,6 +17,7 @@
 
 
 import random
+import os
 from PIL import Image, ImageChops, ImageFilter
 
 
@@ -139,6 +140,11 @@ class PictureMess:
         self.picture_mess = shadow
 
         self.__paste_img_to_mess_top(tmp, (0, 0))
+        # remove the file if it already exists to prevent any bad surprise with
+        # the file not being writable
+
+        if os.path.exists(output_file):
+            os.unlink(output_file)
         self.picture_mess.save(output_file)
 
 
