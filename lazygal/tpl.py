@@ -62,6 +62,8 @@ class LazygalTemplate(object):
     def dump(self, values, dest):
         self.__complement_values(values)
 
+        if os.path.exists(dest):
+            os.unlink(dest)
         page = open(dest, 'w')
         try:
             self.__generate(values).render(method=self.serialization_method,
