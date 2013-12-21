@@ -243,6 +243,8 @@ class FileCopy(FileMakeObject):
         self.add_file_dependency(self.src)
 
     def build(self):
+        if os.path.exists(self.dst):
+            os.unlink(self.dst)
         shutil.copy(self.src, self.dst)
 
 
